@@ -1,7 +1,7 @@
 package com.example.http4stemplate.persistence
 
 import com.example.http4stemplate.persistence.utils.{DB, DBMappers}
-import slick.dbio.Effect
+import cats.effect.Effect
 import slick.jdbc.JdbcProfile
 
 
@@ -10,7 +10,7 @@ case class ItemIdentifier(id: Long)
 case class Item(id: ItemIdentifier, name: String, value: Double)
 
 
-class ItemQueries[F[_]: Effect](dbComponent: DB) {
+class ItemQueries[F[_]: Effect](dbComponent: DB) extends ItemTable(dbComponent.driver)  {
   //TODO: Add item queries
 }
 
