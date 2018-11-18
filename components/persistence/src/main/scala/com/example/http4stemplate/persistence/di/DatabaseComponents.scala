@@ -1,6 +1,7 @@
 package com.example.http4stemplate.persistence.di
 
 import cats.effect.Effect
+import com.example.http4stemplate.persistence.ItemQueries
 import com.example.http4stemplate.persistence.utils.{DB, Reflection}
 import com.typesafe.config.ConfigFactory
 import slick.jdbc.JdbcProfile
@@ -18,5 +19,7 @@ trait DatabaseComponents[F[_]] {
   val profile = Reflection.Object.forString[JdbcProfile](config.getString("database.profile"))
 
   private lazy val dbComponent: DB = new DB("database", profile, config)
+
+  protected lazy val itemQueries = new ItemQueries[F](dbComponent)
 
 }
