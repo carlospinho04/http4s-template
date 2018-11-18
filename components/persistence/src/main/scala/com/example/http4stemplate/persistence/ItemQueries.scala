@@ -4,16 +4,13 @@ import com.example.http4stemplate.persistence.utils.{DB, DBMappers}
 import cats.effect.Effect
 import slick.jdbc.JdbcProfile
 
-
 case class ItemIdentifier(id: Long)
 
 case class Item(id: ItemIdentifier, name: String, value: Double)
 
-
-class ItemQueries[F[_]: Effect](dbComponent: DB) extends ItemTable(dbComponent.driver)  {
+class ItemQueries[F[_]: Effect](dbComponent: DB) extends ItemTable(dbComponent.driver) {
   //TODO: Add item queries
 }
-
 
 class ItemTable(protected val driver: JdbcProfile) extends DBMappers {
 
@@ -32,4 +29,3 @@ class ItemTable(protected val driver: JdbcProfile) extends DBMappers {
   protected val tableQuery = TableQuery[ItemTableDef]
 
 }
-

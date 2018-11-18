@@ -10,14 +10,13 @@ val testSeqOptions: Seq[Def.Setting[_]] =
 
 lazy val root = (project in file("."))
   .settings(organization := "com.example",
-    name := "http4s-template",
-    version := "0.0.1-SNAPSHOT",
-    scalaVersion := scalaVersionNumber,
-    // App Dependencies
-    libraryDependencies ++= http4s ++ database ++ circe ++ jodaTime ++ Seq(logbackClassic,
-      typesafeConfig),
-    // Test Dependencies
-    libraryDependencies ++= Seq(specs2))
+            name := "http4s-template",
+            version := "0.0.1-SNAPSHOT",
+            scalaVersion := scalaVersionNumber,
+            // App Dependencies
+            libraryDependencies ++= http4s ++ database ++ circe ++ jodaTime ++ Seq(logbackClassic, typesafeConfig),
+            // Test Dependencies
+            libraryDependencies ++= Seq(specs2))
   .settings(testSeqOptions)
   .dependsOn(rules)
   .aggregate(rules)
@@ -25,11 +24,11 @@ lazy val root = (project in file("."))
 lazy val rules = project
   .in(file("components/rules"))
   .settings(organization := "com.example",
-    name := "http4s-template-rules",
-    // App Dependencies
-    libraryDependencies ++= http4s ++ Seq(logbackClassic, typesafeConfig),
-    // Test Dependencies
-    libraryDependencies ++= Seq(specs2))
+            name := "http4s-template-rules",
+            // App Dependencies
+            libraryDependencies ++= http4s ++ Seq(logbackClassic, typesafeConfig),
+            // Test Dependencies
+            libraryDependencies ++= Seq(specs2))
   .settings(testSeqOptions: _*)
   .dependsOn(persistence)
   .aggregate(persistence)
@@ -37,8 +36,8 @@ lazy val rules = project
 lazy val persistence = project
   .in(file("components/persistence"))
   .settings(organization := "com.example",
-    name := "http4s-template-persistence",
-    libraryDependencies ++= http4s ++ database ++ jodaTime ++ Seq(logbackClassic))
+            name := "http4s-template-persistence",
+            libraryDependencies ++= http4s ++ database ++ jodaTime ++ Seq(logbackClassic))
   .settings(testSeqOptions: _*)
 
 //Compiler Plugins
@@ -48,5 +47,3 @@ addCompilerPlugin("com.olegpy" %% "better-monadic-for" % "0.2.4")
 // Scapegoat
 scalaVersion in ThisBuild := scalaVersionNumber
 scalaBinaryVersion in ThisBuild := scalaBinaryVersionNumber
-
-
