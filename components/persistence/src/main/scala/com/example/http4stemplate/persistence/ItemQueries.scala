@@ -1,15 +1,27 @@
 package com.example.http4stemplate.persistence
 
-import com.example.http4stemplate.persistence.utils.{DB, DBMappers}
+import com.example.http4stemplate.persistence.utils.{DB, DBMappers, SlickExtensions}
 import cats.effect.Effect
 import slick.jdbc.JdbcProfile
 
-case class ItemIdentifier(id: Long)
+import scala.concurrent.ExecutionContext.Implicits.global
 
-case class Item(id: ItemIdentifier, name: String, value: Double)
+final case class ItemIdentifier(id: Long)
 
-class ItemQueries[F[_]: Effect](dbComponent: DB) extends ItemTable(dbComponent.driver) {
-  //TODO: Add item queries
+final case class Item(id: ItemIdentifier = ItemIdentifier(-1), name: String, price: Long)
+
+class ItemQueries[F[_]: Effect](dbComponent: DB) extends ItemTable(dbComponent.driver) with SlickExtensions {
+  import dbComponent._
+  import driver.api._
+
+  def create(item: Item): F[ItemIdentifier] =
+    db.delay {
+      (tableAutoInc += item).transactionally
+    }
+
+  def list: F[Seq[Item]] = db.delay {
+    tableQuery.result
+  }
 }
 
 class ItemTable(protected val driver: JdbcProfile) extends DBMappers {
@@ -17,15 +29,17 @@ class ItemTable(protected val driver: JdbcProfile) extends DBMappers {
   import driver.api._
 
   class ItemTableDef(tag: Tag) extends Table[Item](tag, "item") {
-    val itemId = column[ItemIdentifier]("problem_id")
+    val id = column[ItemIdentifier]("id", O.PrimaryKey, O.AutoInc)
     val name = column[String]("name")
-    val value = column[Double]("value")
+    val value = column[Long]("price")
 
     def * =
-      (itemId, name, value) <> (Item.tupled, Item.unapply)
+      (id, name, value) <> (Item.tupled, Item.unapply)
 
   }
 
   protected val tableQuery = TableQuery[ItemTableDef]
+
+  private[persistence] def tableAutoInc = tableQuery.returning(tableQuery.map(_.id))
 
 }
