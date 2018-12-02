@@ -19,7 +19,7 @@ lazy val root = (project in file("."))
             libraryDependencies ++= Seq(specs2))
   .settings(testSeqOptions)
   .dependsOn(rules)
-  .aggregate(rules)
+  .dependsOn(domain)
 
 lazy val rules = project
   .in(file("components/rules"))
@@ -31,7 +31,7 @@ lazy val rules = project
             libraryDependencies ++= Seq(specs2))
   .settings(testSeqOptions: _*)
   .dependsOn(persistence)
-  .aggregate(persistence)
+  .dependsOn(domain)
 
 lazy val persistence = project
   .in(file("components/persistence"))
@@ -39,6 +39,11 @@ lazy val persistence = project
             name := "http4s-template-persistence",
             libraryDependencies ++= http4s ++ database ++ jodaTime ++ Seq(logbackClassic))
   .settings(testSeqOptions: _*)
+
+lazy val domain = project
+  .in(file("components/domain"))
+  .settings(organization := "com.example",
+    name := "http4s-template-domain")
 
 //Compiler Plugins
 addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.6")
