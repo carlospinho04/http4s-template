@@ -42,8 +42,7 @@ lazy val persistence = project
 
 lazy val domain = project
   .in(file("components/domain"))
-  .settings(organization := "com.example",
-    name := "http4s-template-domain")
+  .settings(organization := "com.example", name := "http4s-template-domain")
 
 //Compiler Plugins
 addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.6")

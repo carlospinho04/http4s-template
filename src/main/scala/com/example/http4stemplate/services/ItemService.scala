@@ -14,7 +14,7 @@ class ItemService[F[_]: Effect](itemRules: => ItemRules[F])
     with AutoDerivation
     with CirceEntityDecoder
     with CirceEntityEncoder
-    with Logger{
+    with Logger {
 
   val service: HttpService[F] = {
     HttpService[F] {
